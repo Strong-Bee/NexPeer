@@ -2,7 +2,7 @@
 
 ### Private. Direct. Peer-to-Peer.
 
-**NexPeer** is a modern, privacy-focused **peer-to-peer messaging application built with Flutter**. It is designed to enable direct communication between devices with a clean, modern interface and a strong focus on privacy, security, and decentralized communication.
+**NexPeer** is a modern, privacy-focused **peer-to-peer messaging application built with Flutter**. It is designed to enable direct communication between devices through a clean, modern interface with a strong focus on **privacy, security, and decentralized communication**.
 
 > **Your conversations. Your devices. Your privacy.**
 
@@ -18,7 +18,7 @@ Most modern messaging applications depend heavily on centralized infrastructure.
 
 The project is designed around the concept of **peer-to-peer communication**, where devices can communicate directly whenever the underlying network and transport layer support it.
 
-### Core principles
+### Core Principles
 
 * 🔐 **Privacy First**
 * 📡 **Peer-to-Peer Communication**
@@ -37,7 +37,7 @@ The project is designed around the concept of **peer-to-peer communication**, wh
 
 NexPeer provides a modern chat experience designed for direct communication.
 
-Features include:
+### Messaging Features
 
 * Real-time messaging architecture
 * Message status
@@ -64,7 +64,7 @@ NexPeer is built around a **P2P communication architecture**.
 
 The application is designed to discover and communicate with nearby peers without requiring every message to pass through a centralized messaging server.
 
-Potential transport technologies include:
+### Potential Transport Technologies
 
 * Wi-Fi Direct
 * Local network communication
@@ -72,7 +72,7 @@ Potential transport technologies include:
 * Device-to-device connections
 * P2P data streams
 
-The current implementation is structured so that the transport layer can evolve independently from the UI.
+The current architecture keeps the transport layer independent from the user interface, making the system easier to extend and maintain.
 
 ---
 
@@ -82,7 +82,7 @@ Privacy is one of the main goals of NexPeer.
 
 The project includes a dedicated cryptographic service layer for security-related functionality.
 
-Current utilities include:
+### Current Cryptographic Utilities
 
 * SHA-256 hashing
 * SHA-1 hashing
@@ -95,7 +95,7 @@ Current utilities include:
 >
 > Production-grade private messaging should use authenticated encryption and a properly designed key-exchange protocol rather than custom cryptographic constructions.
 
-Future security improvements include:
+### Planned Security Improvements
 
 * 🔑 Public/private key identity
 * 🤝 Secure key exchange
@@ -111,7 +111,7 @@ Future security improvements include:
 
 NexPeer includes a modern story system inspired by temporary social content.
 
-### Story features
+### Story Features
 
 * My Story
 * Add Story
@@ -122,7 +122,7 @@ NexPeer includes a modern story system inspired by temporary social content.
 * Camera integration architecture
 * Temporary content architecture
 
-Future versions can support:
+### Planned Story Features
 
 * 📷 Photo stories
 * 🎥 Video stories
@@ -130,6 +130,7 @@ Future versions can support:
 * 👥 Selected audience
 * ⏱️ Automatic expiration
 * 📊 Story views
+* ❤️ Story reactions
 
 ---
 
@@ -137,7 +138,7 @@ Future versions can support:
 
 NexPeer includes a dedicated calling interface for future real-time communication.
 
-Supported UI concepts:
+### Supported Call Concepts
 
 * 📞 Incoming calls
 * 📲 Outgoing calls
@@ -147,9 +148,9 @@ Supported UI concepts:
 * 🎙️ Voice calls
 * 📹 Video calls
 
-The calling architecture is intended to evolve toward a real-time P2P media solution.
+The calling architecture is intended to evolve toward a real-time **P2P media communication solution**.
 
-Potential technologies include:
+### Potential Technologies
 
 * WebRTC
 * Native platform RTC APIs
@@ -160,9 +161,9 @@ Potential technologies include:
 
 # 👥 Peer Management
 
-NexPeer is designed to provide a dedicated device/peer management experience.
+NexPeer is designed to provide a dedicated device and peer management experience.
 
-Potential peer information includes:
+### Peer Information
 
 * Device name
 * Peer ID
@@ -189,9 +190,9 @@ Example:
 
 # 🎨 Modern UI/UX
 
-NexPeer uses a modern dark interface designed for communication applications.
+NexPeer uses a modern dark interface designed specifically for communication applications.
 
-### UI characteristics
+### UI Characteristics
 
 * Material 3
 * Dark theme
@@ -203,18 +204,18 @@ NexPeer uses a modern dark interface designed for communication applications.
 * Minimal visual clutter
 * Blue/cyan visual identity
 
-The application is designed to feel familiar while maintaining its own visual identity.
+The application is designed to feel familiar while maintaining its own unique visual identity.
 
 ---
 
 # 🏗️ Architecture
 
-NexPeer uses a lightweight Flutter architecture.
+NexPeer uses a lightweight and modular Flutter architecture.
 
 ```text
                     ┌──────────────────┐
-                    │     NexPeer      │
-                    │   Flutter App    │
+                    │      NexPeer     │
+                    │    Flutter App   │
                     └────────┬─────────┘
                              │
              ┌───────────────┼───────────────┐
@@ -226,10 +227,10 @@ NexPeer uses a lightweight Flutter architecture.
              │
              ▼
         ┌────────────────────────┐
-        │       Services         │
+        │        Services        │
         ├────────────────────────┤
-        │ P2P Service             │
-        │ Crypto Service          │
+        │ P2P Service            │
+        │ Crypto Service         │
         └────────────┬───────────┘
                      │
                      ▼
@@ -248,7 +249,7 @@ NexPeer uses a lightweight Flutter architecture.
 
 # 📂 Project Structure
 
-The project intentionally keeps the `lib` directory simple and maintainable.
+The project intentionally keeps the `lib` directory simple, modular, and maintainable.
 
 ```text
 nexpeer/
@@ -273,13 +274,18 @@ nexpeer/
 │   │   └── crypto_service.dart
 │   │
 │   ├── screens/
-│   │   ├── splash_screen.dart
+│   │   ├── splash/
+│   │   │   └── splash_screen.dart
 │   │   ├── home_screen.dart
 │   │   ├── devices_screen.dart
-│   │   ├── chat_screen.dart
-│   │   ├── story_screen.dart
-│   │   ├── call_screen.dart
-│   │   └── profile_screen.dart
+│   │   ├── chat/
+│   │   │   └── chat_screen.dart
+│   │   ├── story/
+│   │   │   └── story_screen.dart
+│   │   ├── call/
+│   │   │   └── call_screen.dart
+│   │   └── profile/
+│   │       └── profile_screen.dart
 │   │
 │   └── widgets/
 │       ├── peer_card.dart
@@ -329,11 +335,11 @@ Before running NexPeer, make sure you have:
 * Flutter SDK
 * Dart SDK
 * Android Studio or Android SDK
-* VS Code / Android Studio
+* VS Code or Android Studio
 * Git
 * Android device or emulator
 
-Verify Flutter:
+Verify your Flutter installation:
 
 ```bash
 flutter doctor
@@ -347,7 +353,7 @@ flutter doctor
 git clone https://github.com/Strong-Bee/NexPeer.git
 ```
 
-Enter the project:
+Enter the project directory:
 
 ```bash
 cd NexPeer
@@ -363,7 +369,7 @@ flutter pub get
 
 # ▶️ Run NexPeer
 
-Run on a connected device:
+Run the application on a connected device:
 
 ```bash
 flutter run
@@ -385,7 +391,7 @@ flutter run -d android
 
 # 🧹 Clean Project
 
-If Flutter reports build or dependency issues:
+If Flutter reports build, dependency, or cache-related issues:
 
 ```bash
 flutter clean
@@ -393,13 +399,7 @@ flutter pub get
 flutter run
 ```
 
-For structural Dart changes that cannot be handled by Hot Reload, use:
-
-```text
-Hot Restart
-```
-
-or restart the application completely.
+For structural Dart changes that cannot be handled by Hot Reload, perform a **Hot Restart** or restart the application completely.
 
 ---
 
@@ -411,7 +411,7 @@ Build a release APK:
 flutter build apk --release
 ```
 
-APK output:
+The generated APK will be available at:
 
 ```text
 build/app/outputs/flutter-apk/app-release.apk
@@ -427,9 +427,9 @@ flutter build apk --split-per-abi
 
 # 🔄 Development Roadmap
 
-NexPeer is actively designed as a modular P2P communication platform.
+NexPeer is actively being developed as a modular **P2P communication platform**.
 
-### Phase 1 — UI Foundation
+## Phase 1 — UI Foundation
 
 * [x] Splash screen
 * [x] Home screen
@@ -440,7 +440,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [x] Navigation
 * [x] Dark theme
 
-### Phase 2 — P2P Connectivity
+## Phase 2 — P2P Connectivity
 
 * [ ] Peer discovery
 * [ ] Device pairing
@@ -449,7 +449,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [ ] Connection recovery
 * [ ] Online/offline detection
 
-### Phase 3 — Messaging
+## Phase 3 — Messaging
 
 * [ ] Real P2P message transport
 * [ ] Message persistence
@@ -458,7 +458,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [ ] Read receipts
 * [ ] Offline message queue
 
-### Phase 4 — Security
+## Phase 4 — Security
 
 * [ ] Cryptographic peer identity
 * [ ] Key exchange
@@ -467,7 +467,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [ ] Message integrity
 * [ ] Key rotation
 
-### Phase 5 — Media Sharing
+## Phase 5 — Media Sharing
 
 * [ ] Image transfer
 * [ ] Video transfer
@@ -476,7 +476,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [ ] File transfer progress
 * [ ] Resumable transfers
 
-### Phase 6 — Real-Time Calls
+## Phase 6 — Real-Time Calls
 
 * [ ] Voice calling
 * [ ] Video calling
@@ -486,7 +486,7 @@ NexPeer is actively designed as a modular P2P communication platform.
 * [ ] Speaker controls
 * [ ] Call history
 
-### Phase 7 — Stories
+## Phase 7 — Stories
 
 * [ ] Photo stories
 * [ ] Video stories
@@ -503,16 +503,16 @@ NexPeer follows a simple principle:
 
 > **Privacy should be designed into the architecture, not added later.**
 
-The long-term architecture aims to minimize unnecessary centralized dependencies and protect communication through modern cryptographic protocols.
+The long-term architecture aims to minimize unnecessary centralized dependencies while protecting communication through modern cryptographic protocols.
 
 A production implementation should avoid:
 
 ```text
 Custom Encryption
-        ❌
+       ❌
 ```
 
-and instead use:
+and instead follow a security architecture such as:
 
 ```text
 Secure Key Exchange
@@ -524,15 +524,15 @@ Integrity Verification
 Secure P2P Transport
 ```
 
-Security-critical implementations should be reviewed and tested before production deployment.
+Security-critical implementations should be reviewed, tested, and independently audited before production deployment.
 
 ---
 
 # 🌐 SEO Keywords
 
-NexPeer is a Flutter-based **peer-to-peer messaging application** focused on private and secure communication.
+NexPeer is a Flutter-based **peer-to-peer messaging application** focused on private, secure, and decentralized communication.
 
-Relevant project keywords:
+Relevant search keywords include:
 
 ```text
 Flutter P2P Chat
@@ -555,6 +555,11 @@ Privacy Focused Messaging
 Secure Peer Communication
 Android P2P Chat
 Cross Platform Messaging App
+Peer to Peer Chat Application
+Private Chat Application
+Flutter P2P Communication
+Secure Flutter App
+Decentralized Chat Application
 ```
 
 ---
@@ -590,12 +595,12 @@ You can contribute by:
 * Improving UI/UX
 * Implementing P2P functionality
 * Improving security architecture
-* Adding tests
+* Adding automated tests
 * Optimizing performance
 * Improving accessibility
 * Suggesting new features
 
-### Development workflow
+### Development Workflow
 
 ```bash
 git checkout -b feature/my-feature
@@ -689,6 +694,8 @@ It is an exploration of what communication could look like when applications pri
 
 **Minimal dependency on centralized infrastructure.**
 
+The vision is to build a communication platform where privacy, direct connectivity, and user control are fundamental parts of the architecture.
+
 ---
 
 # 👨‍💻 Developer
@@ -707,11 +714,11 @@ License information will be added as the project reaches its public release stag
 
 <div align="center">
 
-### 🚀 NexPeer
+# 🚀 NexPeer
 
-**Private. Direct. Peer-to-Peer.**
+### Private. Direct. Peer-to-Peer.
 
-Built with ❤️ using Flutter & Dart.
+Built with ❤️ using **Flutter & Dart**.
 
 **Cyber Technology Project**
 
