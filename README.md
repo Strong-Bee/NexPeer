@@ -12,59 +12,59 @@ Aplikasi ini memiliki konsep seperti aplikasi messenger modern dengan fitur **Ch
 
 ### 💬 Chat
 
-- Private P2P messaging
-- Real-time message
-- Send & receive messages
-- Message timestamp
-- Message delivery status
-- Auto scroll ke pesan terbaru
-- Search messages
-- Copy message
-- Reply message
-- Delete message
-- Clear chat
-- Attachment menu
-- Online/offline connection status
+* Private P2P messaging
+* Real-time message
+* Send & receive messages
+* Message timestamp
+* Message delivery status
+* Auto scroll ke pesan terbaru
+* Search messages
+* Copy message
+* Reply message
+* Delete message
+* Clear chat
+* Attachment menu
+* Online/offline connection status
 
 ### 🟣 Story
 
-- My Story
-- Story dari peer
-- Story viewer
-- Story ring indicator
-- Add Story
-- Recent Stories
-- Camera shortcut
+* My Story
+* Story dari peer
+* Story viewer
+* Story ring indicator
+* Add Story
+* Recent Stories
+* Camera shortcut
 
 ### 📞 Calls
 
-- Call history
-- Incoming call
-- Outgoing call
-- Missed call
-- Voice call
-- Video call
-- Call status
+* Call history
+* Incoming call
+* Outgoing call
+* Missed call
+* Voice call
+* Video call
+* Call status
 
 ### 👤 Profile
 
-- User profile
-- Edit profile
-- Username
-- Profile photo
-- Status
-- Privacy settings
-- Notification settings
-- Application settings
-- About NexPeer
+* User profile
+* Edit profile
+* Username
+* Profile photo
+* Status
+* Privacy settings
+* Notification settings
+* Application settings
+* About NexPeer
 
 ### 📱 P2P Devices
 
-- Discover nearby peers
-- Connect to peer
-- Disconnect peer
-- Connection status
-- Direct device-to-device communication
+* Discover nearby peers
+* Connect to peer
+* Disconnect peer
+* Connection status
+* Direct device-to-device communication
 
 ### 🔐 Privacy
 
@@ -198,12 +198,12 @@ flutter pub get
 
 Make sure you have installed:
 
-- Flutter SDK
-- Dart SDK
-- Android Studio
-- Android SDK
-- Android device or emulator
-- Git
+* Flutter SDK
+* Dart SDK
+* Android Studio
+* Android SDK
+* Android device or emulator
+* Git
 
 Check Flutter installation:
 
@@ -302,12 +302,12 @@ Peer Device
 
 The `P2PService` is responsible for:
 
-- Peer discovery
-- Connection management
-- Connection state
-- Sending messages
-- Receiving messages
-- Disconnecting peers
+* Peer discovery
+* Connection management
+* Connection state
+* Sending messages
+* Receiving messages
+* Disconnecting peers
 
 Example:
 
@@ -352,13 +352,13 @@ Decrypt Message
 
 Recommended security requirements:
 
-- Secure key exchange
-- Authenticated encryption
-- Unique session keys
-- Replay protection
-- Message authentication
-- Secure random number generation
-- No plaintext sensitive data in logs
+* Secure key exchange
+* Authenticated encryption
+* Unique session keys
+* Replay protection
+* Message authentication
+* Secure random number generation
+* No plaintext sensitive data in logs
 
 Do not use:
 
@@ -499,71 +499,71 @@ flutter build apk --split-per-abi
 
 ## Phase 1 — UI
 
-- [x] Splash Screen
-- [x] Home Screen
-- [x] Chat UI
-- [x] Story UI
-- [x] Call UI
-- [x] Profile UI
-- [x] Dark theme
-- [x] Bottom navigation
+* [x] Splash Screen
+* [x] Home Screen
+* [x] Chat UI
+* [x] Story UI
+* [x] Call UI
+* [x] Profile UI
+* [x] Dark theme
+* [x] Bottom navigation
 
 ## Phase 2 — P2P
 
-- [ ] Device discovery
-- [ ] Peer pairing
-- [ ] P2P connection
-- [ ] Send message
-- [ ] Receive message
-- [ ] Connection recovery
-- [ ] Disconnect handling
+* [ ] Device discovery
+* [ ] Peer pairing
+* [ ] P2P connection
+* [ ] Send message
+* [ ] Receive message
+* [ ] Connection recovery
+* [ ] Disconnect handling
 
 ## Phase 3 — Messaging
 
-- [ ] Message persistence
-- [ ] Message IDs
-- [ ] Delivery status
-- [ ] Read status
-- [ ] Reply
-- [ ] Delete
-- [ ] Search
-- [ ] Message synchronization
+* [ ] Message persistence
+* [ ] Message IDs
+* [ ] Delivery status
+* [ ] Read status
+* [ ] Reply
+* [ ] Delete
+* [ ] Search
+* [ ] Message synchronization
 
 ## Phase 4 — Security
 
-- [ ] Secure key exchange
-- [ ] Session encryption
-- [ ] Message authentication
-- [ ] Replay protection
-- [ ] Secure local storage
-- [ ] Device verification
+* [ ] Secure key exchange
+* [ ] Session encryption
+* [ ] Message authentication
+* [ ] Replay protection
+* [ ] Secure local storage
+* [ ] Device verification
 
 ## Phase 5 — Media
 
-- [ ] Image sharing
-- [ ] Video sharing
-- [ ] File sharing
-- [ ] Voice messages
-- [ ] Location sharing
+* [ ] Image sharing
+* [ ] Video sharing
+* [ ] File sharing
+* [ ] Voice messages
+* [ ] Location sharing
 
 ## Phase 6 — Calls
 
-- [ ] Voice call
-- [ ] Video call
-- [ ] Incoming call UI
-- [ ] Call accept/reject
-- [ ] Call history
-- [ ] Call duration
-- [ ] Call disconnect
+* [ ] Voice call
+* [ ] Video call
+* [ ] Incoming call UI
+* [ ] Call accept/reject
+* [ ] Call history
+* [ ] Call duration
+* [ ] Call disconnect
 
 ## Phase 7 — Story
 
-- [ ] Upload image
-- [ ] Upload video
-- [ ] Story expiration
-- [ ] Story viewer
-- [ ] Story reactions
-- [ ] Story privacy
+* [ ] Upload image
+* [ ] Upload video
+* [ ] Story expiration
+* [ ] Story viewer
+* [ ] Story reactions
+* [ ] Story privacy
 
 ---
 
@@ -681,5 +681,3 @@ NexPeer
 🚧 **NexPeer is currently under active development.**
 
 The UI foundation is available, while the P2P transport, secure messaging, media transfer, and real-time calling layers are being developed.
-#   N e x P e e r  
- 
