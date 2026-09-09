@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'call/call_screen.dart';
 import 'chat/chat_screen.dart';
+import 'chat/qr_scan_screen.dart';
 import 'profile/profile_screen.dart';
 import 'story/story_screen.dart';
 
@@ -110,11 +111,12 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
   @override
   void initState() {
     super.initState();
-
     _searchController.addListener(_onSearchChanged);
   }
 
   void _onSearchChanged() {
+    if (!mounted) return;
+
     setState(() {
       _searchQuery = _searchController.text.trim().toLowerCase();
     });
@@ -153,6 +155,33 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
         ),
       ),
     );
+  }
+
+  /// Membuka QR Scanner dan menerima hasil QR.
+  Future<void> _scanQrCode() async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const QrScanScreen()),
+    );
+
+    if (!mounted || result == null) {
+      return;
+    }
+
+    final qrData = result.trim();
+
+    if (qrData.isEmpty) {
+      return;
+    }
+
+    _showMessage('QR berhasil dipindai.');
+
+    // TODO:
+    // Di tahap berikutnya QR payload bisa diproses
+    // untuk melakukan pairing dengan peer.
+    //
+    // Contoh:
+    // await P2PService.instance.pairFromQr(qrData);
   }
 
   void _newChat() {
@@ -195,7 +224,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                   onTap: () {
                     Navigator.pop(sheetContext);
 
-                    _showMessage('QR scanner akan segera tersedia.');
+                    _scanQrCode();
                   },
                 ),
               ],
@@ -420,9 +449,7 @@ class _ChatItem extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
-
           const SizedBox(width: 8),
-
           Text(
             time,
             style: TextStyle(
@@ -454,7 +481,6 @@ class _ChatItem extends StatelessWidget {
 
             if (unread > 0) ...[
               const SizedBox(width: 8),
-
               Container(
                 constraints: const BoxConstraints(minWidth: 22),
                 height: 22,
