@@ -37,7 +37,19 @@ class NearbyShareService {
       type: InternetAddressType.IPv4,
     );
     InternetAddress? localAddress;
-    for (final interface in interfaces) {
+    final preferredInterfaces = [
+      ...interfaces.where((item) {
+        final name = item.name.toLowerCase();
+        return name.contains('wlan') || name.contains('wifi') ||
+            name == 'en0' || name.startsWith('eth');
+      }),
+      ...interfaces.where((item) {
+        final name = item.name.toLowerCase();
+        return !(name.contains('wlan') || name.contains('wifi') ||
+            name == 'en0' || name.startsWith('eth'));
+      }),
+    ];
+    for (final interface in preferredInterfaces) {
       for (final address in interface.addresses) {
         if (!address.isLoopback && !address.isLinkLocal) {
           localAddress = address;
@@ -97,7 +109,7 @@ class NearbyShareService {
       await request.response.close();
       return;
     }
-    fileName = fileName.split(RegExp(r'[/\\\\]')).last.trim();
+    fileName = fileName.split(RegExp(r'[/\\]')).last.trim();
     if (fileName.isEmpty || fileName == '.' || fileName == '..') {
       request.response
         ..statusCode = HttpStatus.badRequest
@@ -113,9 +125,15 @@ class NearbyShareService {
       final safeName = '${DateTime.now().millisecondsSinceEpoch}_$fileName';
       final output = File('${receiveDirectory.path}/$safeName');
       final sink = output.openWrite();
-      await request.pipe(sink);
-      await sink.flush();
-      await sink.close();
+      try {
+        await request.listen(sink.add).asFuture<void>();
+        await sink.flush();
+        await sink.close();
+      } catch (_) {
+        await sink.close();
+        if (await output.exists()) await output.delete();
+        rethrow;
+      }
       _receivedController.add(output.path);
       request.response
         ..statusCode = HttpStatus.created
