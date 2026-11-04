@@ -77,7 +77,6 @@ app.get('/v1/users/:identifier', (req, res) => {
   const row = id.startsWith('np_')
     ? db.prepare('SELECT ' + profileColumns + ' FROM users WHERE uid = ?').get(id.slice(3))
     : db.prepare('SELECT ' + profileColumns + ' FROM users WHERE username = ?').get(id.replace(/^@/, '').toLowerCase());
-  if (!row) return res.status(404).json({ error: 'NexPeer account not found.' });
   res.json({ profile: profile(row) });
 });
 
