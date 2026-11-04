@@ -1,7 +1,7 @@
 # NexPeer
 
 <p align="center">
-  <img src="assets/branding/nexpeer-logo.svg" alt="NexPeer — Connect, Chat, Share" width="420" />
+  <img src="assets/branding/logo-remove-background.png" alt="NexPeer — Connect, Chat, Share" width="420" />
 </p>
 
 <p align="center"><strong>Private. Direct. Peer-to-peer.</strong></p>
