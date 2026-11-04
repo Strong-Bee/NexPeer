@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../services/auth_service.dart';
@@ -70,13 +71,16 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       SelectableText(id, style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5)),
                       TextButton.icon(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('ID dapat disalin melalui tekan lama.')),
-                          );
+                        onPressed: () async {
+                          await Clipboard.setData(ClipboardData(text: id));
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('ID NexPeer disalin.')),
+                            );
+                          }
                         },
                         icon: const Icon(Icons.copy_rounded),
-                        label: const Text('ID NexPeer'),
+                        label: const Text('Salin ID NexPeer'),
                       ),
                     ],
                   ),
