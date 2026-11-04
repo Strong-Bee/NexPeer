@@ -123,6 +123,10 @@ Install dependencies:
 flutter pub get
 ```
 
+## SQLite profile and contacts backend
+
+User profiles, usernames, and contact lists are stored in SQLite through the REST API in `server/`. The Flutter app also keeps a local SQLite cache. Firebase Authentication remains responsible only for sign-in and ID-token verification; Cloud Firestore is not used. Deploy the API with persistent storage mounted at `/data`, configure Firebase Admin credentials, and build the app with `--dart-define=NEXPEER_API_URL=https://your-api.example.com`. See [`server/README.md`](server/README.md) for deployment instructions. SQLite on ephemeral serverless storage is not supported.
+
 ## Firebase configuration
 
 Firebase is required for the authentication flow. The repository does not include project-specific Firebase configuration files; configure your own Firebase project before expecting authentication to work.
