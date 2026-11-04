@@ -1,5 +1,11 @@
 # NexPeer
 
+<p align="center">
+  <img src="assets/branding/nexpeer-logo.svg" alt="NexPeer — Connect, Chat, Share" width="420" />
+</p>
+
+<p align="center"><strong>Private. Direct. Peer-to-peer.</strong></p>
+
 **Private. Direct. Peer-to-peer.**
 
 NexPeer is a cross-platform messaging application built with **Flutter and Dart**. The project currently provides the application UI, Firebase-backed authentication integration, and an initial service architecture for future peer-to-peer communication.
