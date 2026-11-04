@@ -1,5 +1,5 @@
 name: nexpeer
-description: "A new Flutter project."
+description: "Private peer-to-peer messaging application built with Flutter."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
