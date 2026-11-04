@@ -1,5 +1,5 @@
 name: nexpeer
-description: "A new Flutter project."
+description: "Private peer-to-peer messaging application built with Flutter."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -17,11 +17,14 @@ dependencies:
   flutter_p2p_connection: ^3.0.3
   crypto: ^3.0.7
   firebase_core: ^4.14.0
+  cloud_firestore: ^6.1.0
   firebase_auth: ^6.6.1
   google_sign_in: ^7.2.0
   sign_in_with_apple: ^8.2.0
   mobile_scanner: ^7.4.0
   file_picker: ^10.3.7
+  path_provider: ^2.1.5
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:

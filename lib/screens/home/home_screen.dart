@@ -5,6 +5,9 @@ import '../chat/chat_screen.dart';
 import '../chat/qr_scan_screen.dart';
 import '../profile/profile_screen.dart';
 import '../story/story_screen.dart';
+import '../share/share_screen.dart';
+import '../contacts/add_contact_screen.dart';
+import '../contacts/contacts_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -295,6 +298,22 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
         ),
         actions: [
           IconButton(
+            tooltip: 'Kontak',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ContactsScreen()),
+            ),
+            icon: const Icon(Icons.people_alt_outlined),
+          ),
+          IconButton(
+            tooltip: 'NexPeer Share',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ShareScreen()),
+            ),
+            icon: const Icon(Icons.ios_share_rounded),
+          ),
+          IconButton(
             tooltip: 'Search',
             onPressed: () {
               FocusScope.of(context).requestFocus();
@@ -356,7 +375,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     itemCount: chats.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (context, index) =>
                         const Divider(height: 1, indent: 84,
                     ),
                     itemBuilder: (context, index) {

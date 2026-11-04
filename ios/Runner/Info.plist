@@ -24,6 +24,10 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>NexPeer uses the camera to scan a nearby sharing QR code.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>NexPeer uses your local Wi-Fi network to send files directly to nearby devices.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
