@@ -723,3 +723,32 @@ Built with ❤️ using **Flutter & Dart**.
 **Cyber Technology Project**
 
 </div>
+
+
+---
+
+## ⚙️ Platform configuration and implementation status
+
+### Firebase authentication
+
+Authentication is enabled only when the native Firebase configuration is present:
+
+- **Android:** add the Firebase-generated `google-services.json` to `android/app/`.
+- **iOS:** add the Firebase-generated `GoogleService-Info.plist` to `ios/Runner/` and include it in the Runner target in Xcode.
+- Enable Email/Password and the required Google or Apple providers in the Firebase console.
+- Never commit private service-account credentials or signing secrets.
+
+If Firebase is not configured, the app now displays a setup message rather than opening an unprotected home screen or crashing during authentication startup.
+
+### P2P implementation status
+
+The current repository contains the P2P service interface and chat UI, but native peer discovery, pairing, message transport, and delivery acknowledgements are **not yet implemented**. The app must not report a peer as connected or a message as sent until a real transport adapter confirms the operation. The current UI reports this limitation explicitly.
+
+### Validation
+
+GitHub Actions runs:
+
+- `flutter analyze --no-pub`
+- `flutter test --no-pub`
+
+These checks run on pushes and pull requests targeting `main`.
