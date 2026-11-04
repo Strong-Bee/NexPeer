@@ -37,14 +37,10 @@ class _AddContactScreenState extends State<AddContactScreen> {
           payload['uid'] is! String) {
         throw const FormatException('QR bukan QR identitas NexPeer.');
       }
-      setState(() {
-        _candidate = {
-          'uid': payload['uid'],
-          'username': payload['username'],
-          'displayName': payload['displayName'],
-          'photoUrl': payload['photoUrl'],
-        };
-      });
+      final verified = await ContactService.instance.findUser('np_${payload['uid']}');
+      if (verified == null) throw const FormatException('Akun NexPeer tidak ditemukan.');
+      if (!mounted) return;
+      setState(() => _candidate = verified);
     } catch (error) {
       _message('QR tidak valid: $error');
     }
