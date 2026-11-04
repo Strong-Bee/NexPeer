@@ -62,7 +62,7 @@ class ContactsScreen extends StatelessWidget {
           }
           return ListView.separated(
             itemCount: contacts.length,
-            separatorBuilder: (_, _) => const Divider(height: 1, indent: 76),
+            separatorBuilder: (context, index) => const Divider(height: 1, indent: 76),
             itemBuilder: (context, index) {
               final data = contacts[index].data();
               final name = data['displayName']?.toString() ?? 'NexPeer User';
