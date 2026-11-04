@@ -5,6 +5,7 @@ import '../chat/chat_screen.dart';
 import '../chat/qr_scan_screen.dart';
 import '../profile/profile_screen.dart';
 import '../story/story_screen.dart';
+import '../share/share_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -294,6 +295,14 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
+          IconButton(
+            tooltip: 'NexPeer Share',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ShareScreen()),
+            ),
+            icon: const Icon(Icons.ios_share_rounded),
+          ),
           IconButton(
             tooltip: 'Search',
             onPressed: () {
