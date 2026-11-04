@@ -38,9 +38,9 @@ class AuthService {
     return response;
   }
 
-  Future<void> signInWithGoogle() => _client.auth.signInWithOAuth(OAuthProvider.google, redirectTo: 'nexpeer://login-callback');
-  Future<void> signInWithApple() => _client.auth.signInWithOAuth(OAuthProvider.apple, redirectTo: 'nexpeer://login-callback');
-  Future<void> resetPassword(String email) => _client.auth.resetPasswordForEmail(email.trim(), redirectTo: 'nexpeer://reset-password');
+  Future<void> signInWithGoogle() async { await _client.auth.signInWithOAuth(OAuthProvider.google, redirectTo: 'nexpeer://login-callback'); }
+  Future<void> signInWithApple() async { await _client.auth.signInWithOAuth(OAuthProvider.apple, redirectTo: 'nexpeer://login-callback'); }
+  Future<void> resetPassword(String email) async { await _client.auth.resetPasswordForEmail(email.trim(), redirectTo: 'nexpeer://reset-password'); }
 
   Future<void> _ensureProfile() async {
     final user = _client.auth.currentUser;
