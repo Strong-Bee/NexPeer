@@ -7,6 +7,7 @@ import '../profile/profile_screen.dart';
 import '../story/story_screen.dart';
 import '../share/share_screen.dart';
 import '../contacts/add_contact_screen.dart';
+import '../contacts/contacts_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -296,6 +297,14 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
+          IconButton(
+            tooltip: 'Kontak',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ContactsScreen()),
+            ),
+            icon: const Icon(Icons.people_alt_outlined),
+          ),
           IconButton(
             tooltip: 'NexPeer Share',
             onPressed: () => Navigator.push(
