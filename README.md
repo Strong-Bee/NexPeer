@@ -1,361 +1,113 @@
-# 🚀 NexPeer
-
-### Private. Direct. Peer-to-Peer.
-
-**NexPeer** is a modern, privacy-focused **peer-to-peer messaging application built with Flutter**. It is designed to enable direct communication between devices through a clean, modern interface with a strong focus on **privacy, security, and decentralized communication**.
-
-> **Your conversations. Your devices. Your privacy.**
-
-NexPeer aims to provide an alternative approach to conventional messaging applications by exploring **direct device-to-device communication**, secure messaging, private file sharing, stories, and real-time communication.
-
----
-
-## ✨ Why NexPeer?
-
-Most modern messaging applications depend heavily on centralized infrastructure.
-
-**NexPeer takes a different approach.**
-
-The project is designed around the concept of **peer-to-peer communication**, where devices can communicate directly whenever the underlying network and transport layer support it.
-
-### Core Principles
-
-* 🔐 **Privacy First**
-* 📡 **Peer-to-Peer Communication**
-* ⚡ **Fast & Lightweight**
-* 📱 **Cross-Platform Flutter App**
-* 🛡️ **Secure Communication**
-* 🧩 **Modular Architecture**
-* 🎨 **Modern User Interface**
-* 🌐 **Decentralized Communication Research**
-
----
-
-# 📱 Features
-
-## 💬 Private Messaging
-
-NexPeer provides a modern chat experience designed for direct communication.
-
-### Messaging Features
-
-* Real-time messaging architecture
-* Message status
-* Sending state
-* Delivered state
-* Read state
-* Message timestamps
-* Message reply
-* Copy message
-* Delete message
-* Chat search
-* Auto-scroll
-* Empty chat state
-* Connection status
-* Multi-line message input
-
-The messaging layer is designed to integrate with the NexPeer P2P transport service.
-
----
-
-## 📡 Peer-to-Peer Device Communication
-
-NexPeer is built around a **P2P communication architecture**.
-
-The application is designed to discover and communicate with nearby peers without requiring every message to pass through a centralized messaging server.
-
-### Potential Transport Technologies
-
-* Wi-Fi Direct
-* Local network communication
-* Peer discovery
-* Device-to-device connections
-* P2P data streams
-
-The current architecture keeps the transport layer independent from the user interface, making the system easier to extend and maintain.
-
----
-
-## 🔐 Privacy & Security
-
-Privacy is one of the main goals of NexPeer.
-
-The project includes a dedicated cryptographic service layer for security-related functionality.
-
-### Current Cryptographic Utilities
-
-* SHA-256 hashing
-* SHA-1 hashing
-* MD5 hashing
-* Base64 encoding/decoding
-
-> ⚠️ **Security Notice**
->
-> Hashing and Base64 encoding are **not encryption**.
->
-> Production-grade private messaging should use authenticated encryption and a properly designed key-exchange protocol rather than custom cryptographic constructions.
-
-### Planned Security Improvements
-
-* 🔑 Public/private key identity
-* 🤝 Secure key exchange
-* 🔒 End-to-end authenticated encryption
-* 🛡️ Message integrity verification
-* 🔐 Secure session keys
-* 🔄 Key rotation
-* 🆔 Cryptographic peer identities
-
----
-
-# 📖 Stories
-
-NexPeer includes a modern story system inspired by temporary social content.
-
-### Story Features
-
-* My Story
-* Add Story
-* Story rings
-* Recent stories
-* Story viewer
-* Story timestamps
-* Camera integration architecture
-* Temporary content architecture
-
-### Planned Story Features
-
-* 📷 Photo stories
-* 🎥 Video stories
-* 🔒 Private stories
-* 👥 Selected audience
-* ⏱️ Automatic expiration
-* 📊 Story views
-* ❤️ Story reactions
-
----
-
-# 📞 Calls
-
-NexPeer includes a dedicated calling interface for future real-time communication.
-
-### Supported Call Concepts
-
-* 📞 Incoming calls
-* 📲 Outgoing calls
-* ❌ Missed calls
-* ⏱️ Call duration
-* 👤 Contact information
-* 🎙️ Voice calls
-* 📹 Video calls
-
-The calling architecture is intended to evolve toward a real-time **P2P media communication solution**.
-
-### Potential Technologies
-
-* WebRTC
-* Native platform RTC APIs
-* P2P media transport
-* Audio/video streams
-
----
-
-# 👥 Peer Management
-
-NexPeer is designed to provide a dedicated device and peer management experience.
-
-### Peer Information
-
-* Device name
-* Peer ID
-* Connection status
-* Last seen
-* Online/offline state
-* Connection type
-* Trust status
-
-Example:
-
-```text
-┌─────────────────────────────┐
-│ 🟢 Alex's Phone             │
-│                             │
-│ Peer ID                     │
-│ 7F82-A912-CC31              │
-│                             │
-│ ● Connected                 │
-└─────────────────────────────┘
-```
-
----
-
-# 🎨 Modern UI/UX
-
-NexPeer uses a modern dark interface designed specifically for communication applications.
-
-### UI Characteristics
-
-* Material 3
-* Dark theme
-* Modern navigation
-* Smooth animations
-* Rounded components
-* Responsive layouts
-* Clean typography
-* Minimal visual clutter
-* Blue/cyan visual identity
-
-The application is designed to feel familiar while maintaining its own unique visual identity.
-
----
-
-# 🏗️ Architecture
-
-NexPeer uses a lightweight and modular Flutter architecture.
-
-```text
-                    ┌──────────────────┐
-                    │      NexPeer     │
-                    │    Flutter App   │
-                    └────────┬─────────┘
-                             │
-             ┌───────────────┼───────────────┐
-             │               │               │
-             ▼               ▼               ▼
-        ┌─────────┐     ┌─────────┐     ┌─────────┐
-        │ Screens │     │ Widgets │     │ Models  │
-        └────┬────┘     └─────────┘     └─────────┘
-             │
-             ▼
-        ┌────────────────────────┐
-        │        Services        │
-        ├────────────────────────┤
-        │ P2P Service            │
-        │ Crypto Service         │
-        └────────────┬───────────┘
-                     │
-                     ▼
-          ┌─────────────────────┐
-          │ P2P Transport Layer │
-          └──────────┬──────────┘
-                     │
-             ┌───────┴────────┐
-             ▼                ▼
-        ┌─────────┐      ┌─────────┐
-        │  Peer A │ ◄──► │  Peer B │
-        └─────────┘      └─────────┘
-```
-
----
-
-# 📂 Project Structure
-
-The project intentionally keeps the `lib` directory simple, modular, and maintainable.
-
-```text
-nexpeer/
-│
-├── android/
-├── ios/
-├── web/
-├── windows/
-├── linux/
-├── macos/
-│
-├── lib/
-│   │
-│   ├── main.dart
-│   │
-│   ├── models/
-│   │   ├── peer.dart
-│   │   └── message.dart
-│   │
-│   ├── services/
-│   │   ├── p2p_service.dart
-│   │   └── crypto_service.dart
-│   │
-│   ├── screens/
-│   │   ├── splash/
-│   │   │   └── splash_screen.dart
-│   │   ├── home_screen.dart
-│   │   ├── devices_screen.dart
-│   │   ├── chat/
-│   │   │   └── chat_screen.dart
-│   │   ├── story/
-│   │   │   └── story_screen.dart
-│   │   ├── call/
-│   │   │   └── call_screen.dart
-│   │   └── profile/
-│   │       └── profile_screen.dart
-│   │
-│   └── widgets/
-│       ├── peer_card.dart
-│       └── message_bubble.dart
-│
-├── test/
-├── pubspec.yaml
-├── analysis_options.yaml
-└── README.md
-```
-
----
-
-# 🛠️ Technology Stack
-
-NexPeer is built using modern Flutter and Dart technologies.
-
-| Technology                 | Purpose                              |
-| -------------------------- | ------------------------------------ |
-| **Flutter**                | Cross-platform application framework |
-| **Dart**                   | Application programming language     |
-| **Material 3**             | Modern UI system                     |
-| **flutter_p2p_connection** | P2P communication layer              |
-| **crypto**                 | Cryptographic hashing utilities      |
-| **Git**                    | Version control                      |
-| **GitHub**                 | Source code hosting                  |
-
-### Dependencies
-
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-
-  flutter_p2p_connection: ^3.0.3
-  crypto: ^3.0.7
-```
-
----
-
-# 🚀 Getting Started
+# NexPeer
+
+**Private. Direct. Peer-to-peer.**
+
+NexPeer is a cross-platform messaging application built with **Flutter and Dart**. The project currently provides the application UI, Firebase-backed authentication integration, and an initial service architecture for future peer-to-peer communication.
+
+> **Project status:** Active development. The current release is not yet a working peer-to-peer messenger: native peer discovery, device pairing, and message transport have not been implemented.
+
+## Contents
+
+- [Overview](#overview)
+- [Current capabilities](#current-capabilities)
+- [Implementation status](#implementation-status)
+- [Technology stack](#technology-stack)
+- [Requirements](#requirements)
+- [Setup](#setup)
+- [Firebase configuration](#firebase-configuration)
+- [Run and test](#run-and-test)
+- [Build](#build)
+- [Project structure](#project-structure)
+- [Security notes](#security-notes)
+- [Continuous integration](#continuous-integration)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Overview
+
+NexPeer is being developed around these principles:
+
+- **Privacy first:** make privacy and clear security boundaries part of the design.
+- **Direct communication:** work toward device-to-device messaging when a supported transport is available.
+- **Transparent behavior:** never display a simulated connection or claim a message was delivered when it was not.
+- **Modular development:** keep UI, authentication, cryptographic utilities, and transport responsibilities separated.
+- **Cross-platform foundation:** use Flutter to target supported mobile and desktop platforms as implementation progresses.
+
+## Current capabilities
+
+The repository currently includes:
+
+- Flutter application shell with Material 3 dark theme.
+- Splash screen and authentication gate.
+- Firebase Authentication service integration for email/password, Google, and Apple sign-in.
+- Login, registration, and password-reset UI flows.
+- Home, nearby-device, chat, story, call, and profile interface areas.
+- Initial P2P service abstraction and connection/message streams.
+- Basic hashing and Base64 utility methods.
+- Widget tests for startup and the missing-Firebase-configuration state.
+- GitHub Actions workflow for Dart analysis and Flutter tests.
+
+The presence of an interface or service abstraction does not mean the corresponding production backend or transport is complete. See the status table below.
+
+## Implementation status
+
+| Area | Current status |
+| --- | --- |
+| Flutter app shell and navigation | Implemented |
+| Splash and authentication routing | Implemented |
+| Firebase Auth integration | Implemented; requires project configuration and provider setup |
+| Chat interface | UI available; real message delivery unavailable |
+| Nearby device interface | UI available; native discovery unavailable |
+| P2P pairing and transport | Not implemented |
+| Message persistence and synchronization | Not implemented |
+| End-to-end encryption | Not implemented |
+| File transfer | Planned |
+| Voice and video calls | UI concepts only; calling transport not implemented |
+| Stories backend and synchronization | UI concepts only; backend not implemented |
+
+**Important:** The current P2P service deliberately rejects message sending because no native transport adapter is connected. The device screen also reports that discovery is unavailable. Do not treat the current app as suitable for private or production messaging.
+
+## Technology stack
+
+| Technology | Purpose |
+| --- | --- |
+| Flutter | Cross-platform UI framework |
+| Dart | Application language |
+| Material 3 | UI components and theming |
+| Firebase Core | Firebase initialization |
+| Firebase Authentication | User authentication |
+| Google Sign-In | Google identity integration |
+| Sign in with Apple | Apple identity integration |
+| `crypto` | Hashing utilities |
+| GitHub Actions | Automated analysis and tests |
+
+Dependency versions are maintained in [`pubspec.yaml`](pubspec.yaml). Run `flutter pub get` to install the versions resolved for your checkout.
 
 ## Requirements
 
-Before running NexPeer, make sure you have:
+Install the following tools before starting development:
 
-* Flutter SDK
-* Dart SDK
-* Android Studio or Android SDK
-* VS Code or Android Studio
-* Git
-* Android device or emulator
+- Flutter SDK (stable channel).
+- Dart SDK compatible with the constraint in `pubspec.yaml` (provided by Flutter).
+- Android Studio and Android SDK for Android development.
+- Xcode for iOS development (macOS only).
+- Git.
 
-Verify your Flutter installation:
+Check your environment:
 
 ```bash
 flutter doctor
+flutter --version
+dart --version
 ```
 
----
+## Setup
 
-## 📥 Clone Repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/Strong-Bee/NexPeer.git
-```
-
-Enter the project directory:
-
-```bash
 cd NexPeer
 ```
 
@@ -365,15 +117,27 @@ Install dependencies:
 flutter pub get
 ```
 
----
+## Firebase configuration
 
-# ▶️ Run NexPeer
+Firebase is required for the authentication flow. The repository does not include project-specific Firebase configuration files; configure your own Firebase project before expecting authentication to work.
 
-Run the application on a connected device:
+1. Create a project in the [Firebase Console](https://console.firebase.google.com/).
+2. Register each platform application using the matching Android application ID or iOS bundle ID.
+3. Add the generated native configuration:
+   - **Android:** place `google-services.json` in `android/app/`.
+   - **iOS:** add `GoogleService-Info.plist` to `ios/Runner/` and ensure it is included in the Runner target in Xcode.
+4. Enable the authentication providers you intend to use under **Authentication → Sign-in method**:
+   - Email/Password
+   - Google
+   - Apple (requires the relevant Apple Developer and Firebase provider configuration)
+5. Complete any provider-specific platform setup, including OAuth client configuration, Android signing fingerprints, URL schemes, and Apple capabilities where applicable.
+6. Rebuild and run the app.
 
-```bash
-flutter run
-```
+The application attempts to initialize Firebase at startup. If Firebase is unavailable or the platform configuration is missing, it remains launchable and displays a setup message rather than bypassing the authentication gate.
+
+**Never commit** service-account JSON files, private keys, signing credentials, or other secrets. Keep environment-specific credentials out of source control.
+
+## Run and test
 
 List available devices:
 
@@ -381,29 +145,38 @@ List available devices:
 flutter devices
 ```
 
-Run specifically on Android:
+Run on the selected device:
+
+```bash
+flutter run
+```
+
+Run on Android:
 
 ```bash
 flutter run -d android
 ```
 
----
+Run static analysis:
 
-# 🧹 Clean Project
+```bash
+flutter analyze
+```
 
-If Flutter reports build, dependency, or cache-related issues:
+Run automated tests:
+
+```bash
+flutter test
+```
+
+If you encounter stale build artifacts:
 
 ```bash
 flutter clean
 flutter pub get
-flutter run
 ```
 
-For structural Dart changes that cannot be handled by Hot Reload, perform a **Hot Restart** or restart the application completely.
-
----
-
-# 📦 Build APK
+## Build
 
 Build a release APK:
 
@@ -411,344 +184,143 @@ Build a release APK:
 flutter build apk --release
 ```
 
-The generated APK will be available at:
+The APK is normally written to:
 
 ```text
 build/app/outputs/flutter-apk/app-release.apk
 ```
 
-For architecture-specific APKs:
+Build separate APKs for supported Android CPU architectures:
 
 ```bash
 flutter build apk --split-per-abi
 ```
 
----
+A successful build does not by itself verify Firebase provider configuration, real device discovery, or P2P message delivery. Those require platform-specific and device-level testing.
 
-# 🔄 Development Roadmap
+## Project structure
 
-NexPeer is actively being developed as a modular **P2P communication platform**.
-
-## Phase 1 — UI Foundation
-
-* [x] Splash screen
-* [x] Home screen
-* [x] Chat interface
-* [x] Story interface
-* [x] Call interface
-* [x] Profile interface
-* [x] Navigation
-* [x] Dark theme
-
-## Phase 2 — P2P Connectivity
-
-* [ ] Peer discovery
-* [ ] Device pairing
-* [ ] Connection management
-* [ ] P2P data channel
-* [ ] Connection recovery
-* [ ] Online/offline detection
-
-## Phase 3 — Messaging
-
-* [ ] Real P2P message transport
-* [ ] Message persistence
-* [ ] Message synchronization
-* [ ] Message delivery confirmation
-* [ ] Read receipts
-* [ ] Offline message queue
-
-## Phase 4 — Security
-
-* [ ] Cryptographic peer identity
-* [ ] Key exchange
-* [ ] Secure session establishment
-* [ ] Authenticated encryption
-* [ ] Message integrity
-* [ ] Key rotation
-
-## Phase 5 — Media Sharing
-
-* [ ] Image transfer
-* [ ] Video transfer
-* [ ] Audio transfer
-* [ ] Document transfer
-* [ ] File transfer progress
-* [ ] Resumable transfers
-
-## Phase 6 — Real-Time Calls
-
-* [ ] Voice calling
-* [ ] Video calling
-* [ ] Call signaling
-* [ ] Microphone controls
-* [ ] Camera controls
-* [ ] Speaker controls
-* [ ] Call history
-
-## Phase 7 — Stories
-
-* [ ] Photo stories
-* [ ] Video stories
-* [ ] Story expiration
-* [ ] Story privacy
-* [ ] Story views
-* [ ] Story reactions
-
----
-
-# 🔒 Security Philosophy
-
-NexPeer follows a simple principle:
-
-> **Privacy should be designed into the architecture, not added later.**
-
-The long-term architecture aims to minimize unnecessary centralized dependencies while protecting communication through modern cryptographic protocols.
-
-A production implementation should avoid:
+The main application code is organized under `lib/`:
 
 ```text
-Custom Encryption
-       ❌
+NexPeer/
+├── .github/
+│   └── workflows/
+│       └── flutter-ci.yml
+├── android/
+├── ios/
+├── lib/
+│   ├── main.dart
+│   ├── models/
+│   ├── screens/
+│   │   ├── auth/
+│   │   ├── chat/
+│   │   ├── call/
+│   │   ├── profile/
+│   │   ├── splash/
+│   │   └── story/
+│   ├── services/
+│   │   ├── auth_service.dart
+│   │   ├── crypto_service.dart
+│   │   └── p2p_service.dart
+│   └── widgets/
+├── test/
+├── analysis_options.yaml
+├── pubspec.yaml
+└── README.md
 ```
 
-and instead follow a security architecture such as:
+Some platform folders and feature modules may contain additional files not shown in this high-level overview.
 
-```text
-Secure Key Exchange
-        ↓
-Authenticated Encryption
-        ↓
-Integrity Verification
-        ↓
-Secure P2P Transport
-```
+## Security notes
 
-Security-critical implementations should be reviewed, tested, and independently audited before production deployment.
+Security claims must reflect implemented and independently verified behavior.
 
----
+- SHA-256, SHA-1, and MD5 methods in the current crypto utility are **hash functions**, not encryption.
+- Base64 is an encoding format, not encryption.
+- Do not use MD5 or SHA-1 for new security-sensitive designs.
+- Do not implement custom encryption or invent a key-exchange protocol.
+- A production messaging implementation needs authenticated key establishment, authenticated encryption, secure key storage, replay protection, identity verification, and a reviewed protocol.
+- The current P2P service is not a secure transport and does not deliver messages.
+- Review Firebase Authentication rules and any future database/storage security rules before production deployment.
 
-# 🌐 SEO Keywords
+A future end-to-end encryption design should use established, reviewed cryptographic protocols and receive independent security review before being described as production-ready.
 
-NexPeer is a Flutter-based **peer-to-peer messaging application** focused on private, secure, and decentralized communication.
+## Continuous integration
 
-Relevant search keywords include:
+The workflow at [`.github/workflows/flutter-ci.yml`](.github/workflows/flutter-ci.yml) runs on pushes to `main`, `fix/**`, and `feature/**`, and on pull requests targeting `main`.
 
-```text
-Flutter P2P Chat
-Flutter Peer to Peer Messaging
-P2P Messaging App
-Private Messaging App
-Secure Chat Application
-Decentralized Messaging
-Peer to Peer Communication
-Flutter Chat App
-Flutter Messaging App
-Secure Messaging
-Private Chat
-P2P Communication
-Device to Device Messaging
-Flutter P2P
-Dart Messaging Application
-Open Source P2P Chat
-Privacy Focused Messaging
-Secure Peer Communication
-Android P2P Chat
-Cross Platform Messaging App
-Peer to Peer Chat Application
-Private Chat Application
-Flutter P2P Communication
-Secure Flutter App
-Decentralized Chat Application
-```
+The current CI job:
 
----
+1. Checks out the repository.
+2. Installs the Flutter stable channel.
+3. Runs `flutter pub get`.
+4. Runs `flutter analyze --no-pub`.
+5. Runs `flutter test --no-pub`.
 
-# 🎯 Project Goals
+CI currently validates analysis and automated tests; it does not perform a release build or physical-device P2P testing.
 
-NexPeer aims to become a modern communication platform focused on:
+## Roadmap
 
-```text
-Privacy
-   +
-Peer-to-Peer
-   +
-Security
-   +
-Simplicity
-   +
-Modern UX
-```
+- [x] Flutter app foundation and primary interface areas
+- [x] Authentication gate and Firebase Auth service integration
+- [x] Startup fallback when Firebase configuration is missing
+- [x] Automated Flutter analysis and widget-test workflow
+- [x] Honest UI/service behavior when P2P transport is unavailable
+- [ ] Complete Firebase setup documentation and platform verification
+- [ ] Implement native peer discovery for supported platforms
+- [ ] Implement secure peer pairing and connection lifecycle
+- [ ] Integrate a real P2P data transport
+- [ ] Add message persistence, delivery state, and synchronization
+- [ ] Design and review end-to-end encryption
+- [ ] Add file transfer with integrity checks and resumability
+- [ ] Implement voice/video calling and signaling
+- [ ] Implement story storage, privacy controls, and expiration
+- [ ] Add broader integration and device-level tests
 
-The long-term goal is to provide users with greater control over how their conversations and data are transmitted.
+## Contributing
 
----
+Contributions are welcome, especially bug fixes, tests, accessibility improvements, documentation, and carefully scoped transport work.
 
-# 🤝 Contributing
-
-Contributions are welcome.
-
-You can contribute by:
-
-* Reporting bugs
-* Improving documentation
-* Improving UI/UX
-* Implementing P2P functionality
-* Improving security architecture
-* Adding automated tests
-* Optimizing performance
-* Improving accessibility
-* Suggesting new features
-
-### Development Workflow
-
-```bash
-git checkout -b feature/my-feature
-
-git add .
-
-git commit -m "feat: add my feature"
-
-git push origin feature/my-feature
-```
-
-Then create a Pull Request on GitHub.
-
----
-
-# 🐛 Bug Reports
-
-If you discover a bug, please provide:
-
-1. Device/platform
-2. Flutter version
-3. Dart version
-4. Steps to reproduce
-5. Expected behavior
-6. Actual behavior
-7. Error logs
-8. Screenshots when applicable
+1. Fork the repository.
+2. Create a feature branch.
+3. Make focused changes and add or update tests.
+4. Run `flutter analyze` and `flutter test`.
+5. Open a pull request describing the change, verification performed, and any platform-specific limitations.
 
 Example:
 
-```text
-Platform:
-Android 16
-
-Flutter:
-3.x.x
-
-Issue:
-Messages are not delivered after reconnecting to a peer.
-
-Steps:
-1. Connect to peer
-2. Disconnect Wi-Fi
-3. Reconnect
-4. Send message
-
-Expected:
-Message should be delivered.
-
-Actual:
-Message remains in sending state.
+```bash
+git checkout -b feature/describe-your-change
+flutter pub get
+flutter analyze
+flutter test
+git add .
+git commit -m "feat: describe your change"
+git push origin feature/describe-your-change
 ```
 
----
+Do not include Firebase credentials, signing keys, user data, or generated secrets in pull requests.
 
-# 📊 Project Status
+## Bug reports
 
-**Current Status: 🚧 Active Development**
+When reporting a bug, include:
 
-| Component               | Status            |
-| ----------------------- | ----------------- |
-| Flutter UI              | 🟢 Available      |
-| Navigation              | 🟢 Available      |
-| Chat UI                 | 🟢 Available      |
-| Story UI                | 🟢 Available      |
-| Call UI                 | 🟢 Available      |
-| Profile UI              | 🟢 Available      |
-| P2P Architecture        | 🟡 In Development |
-| Real P2P Transport      | 🟡 In Development |
-| Secure Messaging        | 🟡 Planned        |
-| File Transfer           | 🟡 Planned        |
-| Voice Calls             | 🟡 Planned        |
-| Video Calls             | 🟡 Planned        |
-| Story Backend/Transport | 🟡 Planned        |
+- Device and operating system version.
+- Flutter and Dart versions.
+- Steps to reproduce.
+- Expected and actual behavior.
+- Relevant sanitized logs or screenshots.
+- Whether Firebase was configured for the affected platform.
+
+Remove access tokens, email addresses, device identifiers, and other private information from logs before sharing them.
+
+## License
+
+No license file is currently included in this repository. Unless and until a license is added, do not assume that the source code is available for unrestricted reuse, redistribution, or modification.
 
 ---
 
-# 🏆 Vision
-
-NexPeer is more than another chat interface.
-
-It is an exploration of what communication could look like when applications prioritize:
-
-**Privacy.**
-
-**Direct communication.**
-
-**Security.**
-
-**User ownership.**
-
-**Minimal dependency on centralized infrastructure.**
-
-The vision is to build a communication platform where privacy, direct connectivity, and user control are fundamental parts of the architecture.
-
----
-
-# 👨‍💻 Developer
+**NexPeer** — built with Flutter and Dart.
 
 **Cyber Technology Project**
-
-Building software, automation, AI, and privacy-focused technology.
-
----
-
-# 📄 License
-
-License information will be added as the project reaches its public release stage.
-
----
-
-<div align="center">
-
-# 🚀 NexPeer
-
-### Private. Direct. Peer-to-Peer.
-
-Built with ❤️ using **Flutter & Dart**.
-
-**Cyber Technology Project**
-
-</div>
-
-
----
-
-## ⚙️ Platform configuration and implementation status
-
-### Firebase authentication
-
-Authentication is enabled only when the native Firebase configuration is present:
-
-- **Android:** add the Firebase-generated `google-services.json` to `android/app/`.
-- **iOS:** add the Firebase-generated `GoogleService-Info.plist` to `ios/Runner/` and include it in the Runner target in Xcode.
-- Enable Email/Password and the required Google or Apple providers in the Firebase console.
-- Never commit private service-account credentials or signing secrets.
-
-If Firebase is not configured, the app now displays a setup message rather than opening an unprotected home screen or crashing during authentication startup.
-
-### P2P implementation status
-
-The current repository contains the P2P service interface and chat UI, but native peer discovery, pairing, message transport, and delivery acknowledgements are **not yet implemented**. The app must not report a peer as connected or a message as sent until a real transport adapter confirms the operation. The current UI reports this limitation explicitly.
-
-### Validation
-
-GitHub Actions runs:
-
-- `flutter analyze --no-pub`
-- `flutter test --no-pub`
-
-These checks run on pushes and pull requests targeting `main`.
