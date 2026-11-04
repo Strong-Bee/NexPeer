@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import '../auth/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
-  final bool firebaseReady;
+  final bool supabaseReady;
 
-  const SplashScreen({super.key, this.firebaseReady = false});
+  const SplashScreen({super.key, this.supabaseReady = false});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => AuthGate(firebaseReady: widget.firebaseReady),
+          builder: (_) => AuthGate(supabaseReady: widget.supabaseReady),
         ),
       );
     });
