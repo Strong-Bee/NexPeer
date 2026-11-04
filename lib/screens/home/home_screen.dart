@@ -6,6 +6,7 @@ import '../chat/qr_scan_screen.dart';
 import '../profile/profile_screen.dart';
 import '../story/story_screen.dart';
 import '../share/share_screen.dart';
+import '../contacts/add_contact_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
