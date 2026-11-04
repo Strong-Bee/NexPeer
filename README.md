@@ -332,6 +332,6 @@ The chat composer supports selecting multiple image files from the photo picker 
 
 - Maximum size: 25 MB per file and 50 MB total in the current attachment selection.
 - Selected files appear in a removable preview list before sending.
-- Image thumbnails are shown when the platform provides file bytes.
+- File-type icons and file sizes are shown in the attachment preview.
 - Attachments remain local and in-memory while they are pending; they are not uploaded or persisted.
 - **Actual transfer is not available yet.** The native P2P transport and file-transfer adapter are not implemented. Attempting to send a selected file reports this limitation and does not mark the file as sent. Do not use this build to transfer files between devices.
