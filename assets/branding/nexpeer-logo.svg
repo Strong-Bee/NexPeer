@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+<title id="title">NexPeer</title><desc id="desc">NexPeer peer-to-peer communication logo with two connected devices and a gradient N mark.</desc>
+<defs>
+ <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#22e6ff"/><stop offset=".48" stop-color="#087bff"/><stop offset="1" stop-color="#713cff"/></linearGradient>
+ <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#28eaff"/><stop offset=".55" stop-color="#286cff"/><stop offset="1" stop-color="#e52bff"/></linearGradient>
+ <linearGradient id="word" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#f5fbff"/><stop offset=".48" stop-color="#19dfff"/><stop offset="1" stop-color="#c43cff"/></linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g fill="none" stroke="url(#cyan)" stroke-width="18" stroke-linecap="round" filter="url(#glow)">
+ <path d="M355 125 Q450 30 545 125"/><path d="M390 165 Q450 105 510 165"/><path d="M425 205 Q450 180 475 205"/>
+</g><circle cx="450" cy="232" r="15" fill="#20dfff"/>
+<g transform="translate(0 8)" fill="#071631" stroke="url(#pink)" stroke-width="13">
+ <g transform="rotate(-17 245 380)"><rect x="130" y="250" width="210" height="320" rx="34"/><rect x="204" y="266" width="62" height="8" rx="4" fill="#1c8bff" stroke="none"/><circle cx="235" cy="365" r="34" fill="#f3f8ff" stroke="none"/><path d="M172 465 Q235 390 298 465 L298 490 L172 490Z" fill="#dbe9ff" stroke="none"/></g>
+ <g transform="rotate(17 655 380)"><rect x="560" y="250" width="210" height="320" rx="34"/><rect x="634" y="266" width="62" height="8" rx="4" fill="#a45cff" stroke="none"/><circle cx="665" cy="365" r="34" fill="#f3f8ff" stroke="none"/><path d="M602 465 Q665 390 728 465 L728 490 L602 490Z" fill="#dbe9ff" stroke="none"/></g>
+</g>
+<path d="M130 520 C215 645 685 645 770 520" fill="none" stroke="url(#pink)" stroke-width="18" stroke-linecap="round" filter="url(#glow)"/>
+<path d="M310 545 L380 320 Q390 290 420 310 L520 440 L575 300" fill="none" stroke="url(#word)" stroke-width="66" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+<text x="450" y="710" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="112" font-weight="800" fill="url(#word)" letter-spacing="-5">NexPeer</text>
+<rect x="170" y="755" width="560" height="72" rx="36" fill="#071631" stroke="url(#pink)" stroke-width="5"/>
+<text x="450" y="802" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="32" font-weight="600" fill="#f4f8ff">Connect • Chat • Share</text>
+</svg>
