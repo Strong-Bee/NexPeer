@@ -12,9 +12,7 @@ class DevicesScreen extends StatefulWidget {
 
 class _DevicesScreenState extends State<DevicesScreen> {
   final P2PService _p2pService = P2PService.instance;
-
   bool _scanning = false;
-
   final List<PeerDevice> _devices = [];
 
   @override
@@ -24,68 +22,45 @@ class _DevicesScreenState extends State<DevicesScreen> {
   }
 
   Future<void> _scanDevices() async {
+    if (_scanning) return;
     setState(() {
       _scanning = true;
       _devices.clear();
     });
 
-    try {
-      // TODO:
-      // Hubungkan discovery dengan
-      // flutter_p2p_connection ^3.0.3.
-      //
-      // Setelah API P2P dipasang, device yang ditemukan
-      // akan dimasukkan ke dalam _devices.
+    // No native discovery adapter exists yet. Never show a fake scan result.
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    setState(() => _scanning = false);
 
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!mounted) return;
-
-      setState(() {
-        _scanning = false;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Scan selesai. P2P discovery siap dihubungkan.'),
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'P2P discovery belum tersedia. Integrasi transport masih diperlukan.',
         ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-
-      setState(() {
-        _scanning = false;
-      });
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Gagal melakukan scan: $e')));
-    }
+      ),
+    );
   }
 
   Future<void> _connectToDevice(PeerDevice device) async {
-    try {
-      // TODO:
-      // Hubungkan dengan API connection dari
-      // flutter_p2p_connection.
-
-      _p2pService.setConnected(device.id);
-
-      if (!mounted) return;
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ChatScreen(peerName: device.name, peerId: device.id),
+    if (!_p2pService.isTransportReady) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Koneksi perangkat belum tersedia karena transport P2P belum diintegrasikan.',
+          ),
         ),
       );
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal terhubung ke ${device.name}: $e')),
-      );
+      return;
     }
+
+    if (!mounted) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatScreen(peerName: device.name, peerId: device.id),
+      ),
+    );
   }
 
   @override
@@ -112,7 +87,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
               ),
             ],
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -138,17 +112,16 @@ class _DevicesScreenState extends State<DevicesScreen> {
                         ),
                         SizedBox(height: 6),
                         Text(
-                          'Discover devices available for '
-                          'a direct P2P connection.',
+                          'P2P discovery is not connected yet. Nearby device '
+                          'scanning will be enabled after the native transport '
+                          'adapter is implemented.',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white54, fontSize: 12),
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -168,7 +141,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
               ),
             ),
           ),
-
           if (_devices.isEmpty)
             const SliverFillRemaining(
               hasScrollBody: false,
@@ -190,8 +162,7 @@ class _DevicesScreenState extends State<DevicesScreen> {
                       ),
                       SizedBox(height: 6),
                       Text(
-                        'Make sure the other device is '
-                        'available for P2P connection.',
+                        'Device discovery is not active in this build.',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white38, fontSize: 12),
                       ),
@@ -207,7 +178,6 @@ class _DevicesScreenState extends State<DevicesScreen> {
                 itemCount: _devices.length,
                 itemBuilder: (context, index) {
                   final device = _devices[index];
-
                   return ListTile(
                     leading: const CircleAvatar(child: Icon(Icons.smartphone)),
                     title: Text(device.name),
