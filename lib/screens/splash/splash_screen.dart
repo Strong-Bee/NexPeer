@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../home_screen.dart';
+import '../auth/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final bool firebaseReady;
+
+  const SplashScreen({super.key, this.firebaseReady = false});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -13,9 +15,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
+  late final AnimationController _animationController;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<double> _scaleAnimation;
+  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -37,17 +40,20 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    Timer(const Duration(seconds: 2), () {
+    _navigationTimer = Timer(const Duration(seconds: 2), () {
       if (!mounted) return;
 
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => AuthGate(firebaseReady: widget.firebaseReady),
+        ),
+      );
     });
   }
 
   @override
   void dispose() {
+    _navigationTimer?.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -64,7 +70,6 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // LOGO
                 Container(
                   width: 100,
                   height: 100,
@@ -75,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen>
                       end: Alignment.bottomRight,
                       colors: [Color(0xFF2563EB), Color(0xFF06B6D4)],
                     ),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Color(0x552563EB),
                         blurRadius: 30,
@@ -89,10 +94,7 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Colors.white,
                   ),
                 ),
-
                 const SizedBox(height: 28),
-
-                // APP NAME
                 const Text(
                   'NexPeer',
                   style: TextStyle(
@@ -102,10 +104,7 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Colors.white,
                   ),
                 ),
-
                 const SizedBox(height: 8),
-
-                // TAGLINE
                 const Text(
                   'Private. Direct. Peer-to-Peer.',
                   style: TextStyle(
@@ -114,10 +113,7 @@ class _SplashScreenState extends State<SplashScreen>
                     letterSpacing: 0.3,
                   ),
                 ),
-
                 const SizedBox(height: 45),
-
-                // LOADING
                 const SizedBox(
                   width: 24,
                   height: 24,
