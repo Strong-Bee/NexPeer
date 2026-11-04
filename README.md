@@ -8,7 +8,7 @@
 
 **Private. Direct. Peer-to-peer.**
 
-NexPeer is a cross-platform messaging application built with **Flutter and Dart**. The project currently provides the application UI, Firebase-backed authentication integration, and an initial service architecture for future peer-to-peer communication.
+NexPeer is a cross-platform messaging application built with **Flutter and Dart**. The project currently provides the application UI, Supabase-backed authentication and contact synchronization, and an initial service architecture for future peer-to-peer communication.
 
 > **Project status:** Active development. The current release is not yet a working peer-to-peer messenger: native peer discovery, device pairing, and message transport have not been implemented.
 
@@ -20,7 +20,7 @@ NexPeer is a cross-platform messaging application built with **Flutter and Dart*
 - [Technology stack](#technology-stack)
 - [Requirements](#requirements)
 - [Setup](#setup)
-- [Firebase configuration](#firebase-configuration)
+- [Supabase configuration](#firebase-configuration)
 - [Run and test](#run-and-test)
 - [Build](#build)
 - [Project structure](#project-structure)
@@ -46,7 +46,7 @@ The repository currently includes:
 
 - Flutter application shell with Material 3 dark theme.
 - Splash screen and authentication gate.
-- Firebase Authentication service integration for email/password, Google, and Apple sign-in.
+- Supabase Auth integration for email/password, Google, and Apple sign-in.
 - Login, registration, and password-reset UI flows.
 - Home, nearby-device, chat, story, call, and profile interface areas.
 - Initial P2P service abstraction and connection/message streams.
@@ -62,7 +62,7 @@ The presence of an interface or service abstraction does not mean the correspond
 | --- | --- |
 | Flutter app shell and navigation | Implemented |
 | Splash and authentication routing | Implemented |
-| Firebase Auth integration | Implemented; requires project configuration and provider setup |
+| Supabase Auth integration | Implemented; requires project configuration and provider setup |
 | Chat interface | UI available; real message delivery unavailable |
 | Nearby device interface | UI available; native discovery unavailable |
 | P2P pairing and transport | Not implemented |
@@ -81,10 +81,10 @@ The presence of an interface or service abstraction does not mean the correspond
 | Flutter | Cross-platform UI framework |
 | Dart | Application language |
 | Material 3 | UI components and theming |
-| Firebase Core | Firebase initialization |
-| Firebase Authentication | User authentication |
-| Google Sign-In | Google identity integration |
-| Sign in with Apple | Apple identity integration |
+| Supabase Flutter | Firebase initialization |
+| Supabase Auth | User authentication |
+| Supabase OAuth (Google) | Google identity integration |
+| Supabase OAuth (Apple) | Apple identity integration |
 | `crypto` | Hashing utilities |
 | GitHub Actions | Automated analysis and tests |
 
@@ -123,9 +123,9 @@ Install dependencies:
 flutter pub get
 ```
 
-## Firebase configuration
+## Supabase configuration
 
-Firebase is required for the authentication flow. The repository does not include project-specific Firebase configuration files; configure your own Firebase project before expecting authentication to work.
+Supabase is required for the authentication flow. The repository does not include project-specific Supabase configuration files; configure your own Firebase project before expecting authentication to work.
 
 1. Create a project in the [Firebase Console](https://console.firebase.google.com/).
 2. Register each platform application using the matching Android application ID or iOS bundle ID.
@@ -142,6 +142,25 @@ Firebase is required for the authentication flow. The repository does not includ
 The application attempts to initialize Firebase at startup. If Firebase is unavailable or the platform configuration is missing, it remains launchable and displays a setup message rather than bypassing the authentication gate.
 
 **Never commit** service-account JSON files, private keys, signing credentials, or other secrets. Keep environment-specific credentials out of source control.
+
+## Supabase configuration
+
+NexPeer uses Supabase Auth and PostgreSQL as its central backend. SQLite stores a local cache of contacts. Firebase is no longer used.
+
+1. Create a Supabase project and copy its Project URL and publishable key.
+2. Apply `supabase/migrations/20261105000000_nexpeer_profiles_contacts.sql` in the Supabase SQL Editor.
+3. Enable Email authentication and configure Google / Apple providers under Authentication → Providers if needed.
+4. Add `nexpeer://login-callback` and `nexpeer://reset-password` to the Supabase Auth redirect URL allow list.
+5. Configure provider credentials and callback URLs in Google Cloud / Apple Developer.
+6. Run with:
+
+```bash
+flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLISHABLE_KEY
+```
+
+Never embed a `service_role` or secret key in the Flutter app. The SQL migration enables RLS and grants authenticated API access explicitly. Profile lookup is available to signed-in users; contact rows are owner-restricted. SQLite is only a local cache.
+
+**Firebase account migration:** existing Firebase users are not automatically transferred. Supabase issues new user IDs, so passwords, profile IDs, QR codes, and contacts require a separately planned migration and account verification.
 
 ## Run and test
 
@@ -253,7 +272,7 @@ Security claims must reflect implemented and independently verified behavior.
 - Do not implement custom encryption or invent a key-exchange protocol.
 - A production messaging implementation needs authenticated key establishment, authenticated encryption, secure key storage, replay protection, identity verification, and a reviewed protocol.
 - The current P2P service is not a secure transport and does not deliver messages.
-- Review Firebase Authentication rules and any future database/storage security rules before production deployment.
+- Review Supabase Auth rules and any future database/storage security rules before production deployment.
 
 A future end-to-end encryption design should use established, reviewed cryptographic protocols and receive independent security review before being described as production-ready.
 
@@ -275,7 +294,7 @@ CI currently validates analysis and automated tests; it does not perform a relea
 
 - [x] Flutter app foundation and primary interface areas
 - [x] Authentication gate and Firebase Auth service integration
-- [x] Startup fallback when Firebase configuration is missing
+- [x] Startup fallback when Supabase configuration is missing
 - [x] Automated Flutter analysis and widget-test workflow
 - [x] Honest UI/service behavior when P2P transport is unavailable
 - [ ] Complete Firebase setup documentation and platform verification

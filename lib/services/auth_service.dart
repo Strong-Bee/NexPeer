@@ -1,156 +1,61 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class NexPeerUser {
+  const NexPeerUser(this.raw);
+  final User raw;
+  String get uid => raw.id;
+  String? get displayName => raw.userMetadata?['display_name'] as String? ?? raw.userMetadata?['full_name'] as String?;
+  String? get photoURL => raw.userMetadata?['avatar_url'] as String? ?? raw.userMetadata?['picture'] as String?;
+  String? get email => raw.email;
+}
 
 class AuthService {
   AuthService._();
-
   static final AuthService instance = AuthService._();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  User? get currentUser => _auth.currentUser;
+  SupabaseClient get _client => Supabase.instance.client;
+  NexPeerUser? get currentUser { final user = _client.auth.currentUser; return user == null ? null : NexPeerUser(user); }
   bool get isLoggedIn => currentUser != null;
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  Stream<AuthState> get authStateChanges => _client.auth.onAuthStateChange;
+  String _normalize(String value) => value.trim().replaceFirst(RegExp(r'^@'), '').toLowerCase();
 
-  Future<UserCredential> login({
-    required String email,
-    required String password,
-  }) async {
-    final credential = await _auth.signInWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
-    await _ensureSocialProfile(credential.user);
-    return credential;
+  Future<AuthResponse> login({required String email, required String password}) async {
+    final response = await _client.auth.signInWithPassword(email: email.trim(), password: password);
+    await _ensureProfile();
+    return response;
   }
 
-  Future<UserCredential> register({
-    required String name,
-    required String username,
-    required String email,
-    required String password,
-  }) async {
-    final normalized = username
-        .trim()
-        .replaceFirst(RegExp(r'^@'), '')
-        .toLowerCase();
+  Future<AuthResponse> register({required String name, required String username, required String email, required String password}) async {
+    final normalized = _normalize(username);
     if (!RegExp(r'^[a-z0-9_]{3,24}$').hasMatch(normalized)) {
-      throw FirebaseAuthException(
-        code: 'invalid-username',
-        message: 'Username harus 3-24 karakter, huruf kecil, angka, atau garis bawah.',
-      );
+      throw const AuthException('Username harus 3-24 karakter, huruf kecil, angka, atau garis bawah.', statusCode: 'invalid_username');
     }
-
-    final usernameRef = _firestore.collection('usernames').doc(normalized);
-    final usernameSnapshot = await usernameRef.get();
-    if (usernameSnapshot.exists) {
-      throw FirebaseAuthException(code: 'username-already-in-use');
+    final existing = await _client.from('profiles').select('id').ilike('username', normalized).maybeSingle();
+    if (existing != null) throw const AuthException('Username sudah digunakan.', statusCode: 'username_already_exists');
+    final response = await _client.auth.signUp(email: email.trim(), password: password, data: {'display_name': name.trim(), 'username': normalized});
+    if (response.user != null && response.session != null) {
+      await _upsertProfile(response.user!, username: normalized, displayName: name.trim());
     }
-
-    final credential = await _auth.createUserWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
-    final user = credential.user;
-    if (user == null) return credential;
-
-    try {
-      await user.updateDisplayName(name.trim());
-      final userRef = _firestore.collection('users').doc(user.uid);
-      await _firestore.runTransaction((transaction) async {
-        final existing = await transaction.get(usernameRef);
-        if (existing.exists) {
-          throw FirebaseAuthException(code: 'username-already-in-use');
-        }
-        transaction.set(usernameRef, {'uid': user.uid});
-        transaction.set(userRef, {
-          'uid': user.uid,
-          'username': normalized,
-          'displayName': name.trim(),
-          'photoUrl': user.photoURL,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      });
-    } catch (_) {
-      await user.delete();
-      rethrow;
-    }
-    return credential;
+    return response;
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    final googleSignIn = GoogleSignIn.instance;
-    await googleSignIn.initialize();
-    final googleUser = await googleSignIn.authenticate();
-    final googleAuthentication = googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuthentication.idToken,
-    );
-    final result = await _auth.signInWithCredential(credential);
-    await _ensureSocialProfile(result.user);
-    return result;
-  }
+  Future<void> signInWithGoogle() async { await _client.auth.signInWithOAuth(OAuthProvider.google, redirectTo: 'nexpeer://login-callback'); }
+  Future<void> signInWithApple() async { await _client.auth.signInWithOAuth(OAuthProvider.apple, redirectTo: 'nexpeer://login-callback'); }
+  Future<void> resetPassword(String email) async { await _client.auth.resetPasswordForEmail(email.trim(), redirectTo: 'nexpeer://reset-password'); }
 
-  Future<UserCredential> signInWithApple() async {
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    final oauthCredential = OAuthProvider('apple.com').credential(
-      idToken: appleCredential.identityToken,
-      accessToken: appleCredential.authorizationCode,
-    );
-    final credential = await _auth.signInWithCredential(oauthCredential);
-    final user = credential.user;
-    final name = [
-      appleCredential.givenName,
-      appleCredential.familyName,
-    ].whereType<String>().join(' ').trim();
-    if (user != null &&
-        name.isNotEmpty &&
-        (user.displayName == null || user.displayName!.isEmpty)) {
-      await user.updateDisplayName(name);
-    }
-    await _ensureSocialProfile(user);
-    return credential;
-  }
-
-  Future<void> _ensureSocialProfile(User? user) async {
+  Future<void> _ensureProfile() async {
+    final user = _client.auth.currentUser;
     if (user == null) return;
-    final userRef = _firestore.collection('users').doc(user.uid);
-    final snapshot = await userRef.get();
-    if (snapshot.exists) return;
-
-    final base = 'user_${user.uid.substring(0, 8)}';
-    final usernameRef = _firestore.collection('usernames').doc(base);
-    await _firestore.runTransaction((transaction) async {
-      final existing = await transaction.get(usernameRef);
-      if (existing.exists && existing.data()?['uid'] != user.uid) {
-        throw FirebaseAuthException(code: 'username-reservation-conflict');
-      }
-      transaction.set(usernameRef, {'uid': user.uid});
-      transaction.set(userRef, {
-        'uid': user.uid,
-        'username': base,
-        'displayName': user.displayName ?? base,
-        'photoUrl': user.photoURL,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-    });
+    final existing = await _client.from('profiles').select('id').eq('id', user.id).maybeSingle();
+    if (existing != null) return;
+    final metadata = user.userMetadata ?? {};
+    final rawName = metadata['username'] as String? ?? 'user_\${user.id.substring(0, 8)}';
+    final normalized = _normalize(rawName);
+    final username = RegExp(r'^[a-z0-9_]{3,24}$').hasMatch(normalized) ? normalized : 'user_\${user.id.substring(0, 8)}';
+    await _upsertProfile(user, username: username, displayName: metadata['display_name'] as String? ?? metadata['full_name'] as String? ?? username);
   }
 
-  Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(email: email.trim());
+  Future<void> _upsertProfile(User user, {required String username, required String displayName}) async {
+    await _client.from('profiles').upsert({'id': user.id, 'username': username, 'display_name': displayName, 'avatar_url': user.userMetadata?['avatar_url'] ?? user.userMetadata?['picture'], 'updated_at': DateTime.now().toUtc().toIso8601String()});
   }
-
-  Future<void> logout() async {
-    try {
-      await GoogleSignIn.instance.signOut();
-    } catch (_) {}
-    await _auth.signOut();
-  }
+  Future<void> logout() => _client.auth.signOut();
 }
