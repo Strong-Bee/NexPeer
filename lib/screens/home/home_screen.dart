@@ -356,7 +356,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     itemCount: chats.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (context, index) =>
                         const Divider(height: 1, indent: 84,
                     ),
                     itemBuilder: (context, index) {
