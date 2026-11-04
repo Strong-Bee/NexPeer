@@ -272,7 +272,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final result = await FilePicker.platform.pickFiles(
         type: imagesOnly ? FileType.image : FileType.any,
         allowMultiple: true,
-        withData: true,
+        withData: false,
       );
 
       if (result == null || !mounted) return;
@@ -764,53 +764,50 @@ class _MessageInput extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-            IconButton(
-              onPressed: onAttachment,
-              icon: const Icon(Icons.attach_file),
-            ),
-
-            Expanded(
-              child: TextField(
-                controller: controller,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => onSend(),
-                minLines: 1,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'Message...',
-                  filled: true,
-                  fillColor: Colors.white.withValues(alpha: 0.06),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
+                IconButton(
+                  onPressed: onAttachment,
+                  icon: const Icon(Icons.attach_file),
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => onSend(),
+                    minLines: 1,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: 'Message...',
+                      filled: true,
+                      fillColor: Colors.white.withValues(alpha: 0.06),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-
-            const SizedBox(width: 7),
-
-            CircleAvatar(
-              radius: 23,
-              backgroundColor: Colors.blue,
-              child: sending
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : IconButton(
-                      onPressed: onSend,
-                      icon: const Icon(Icons.send, size: 19),
-                    ),
-            ),
+                const SizedBox(width: 7),
+                CircleAvatar(
+                  radius: 23,
+                  backgroundColor: Colors.blue,
+                  child: sending
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: onSend,
+                          icon: const Icon(Icons.send, size: 19),
+                        ),
+                ),
               ],
             ),
           ],
@@ -860,7 +857,7 @@ class _PendingFilesList extends StatelessWidget {
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: files.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 6),
+        separatorBuilder: (context, index) => const SizedBox(height: 6),
         itemBuilder: (context, index) {
           final file = files[index];
           final isImage = [
@@ -875,19 +872,7 @@ class _PendingFilesList extends StatelessWidget {
             ),
             child: Row(
               children: [
-                if (isImage && file.bytes != null)
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.memory(
-                      file.bytes!,
-                      width: 38,
-                      height: 38,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, _, _) => Icon(_iconFor(file)),
-                    ),
-                  )
-                else
-                  Icon(_iconFor(file), size: 30),
+                Icon(_iconFor(file), size: 30),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
