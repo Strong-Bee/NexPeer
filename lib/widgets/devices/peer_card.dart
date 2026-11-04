@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/peer.dart';
+import '../../models/peer.dart';
 
 /// Menampilkan satu peer dalam daftar perangkat, lengkap dengan status
 /// koneksi dan tombol aksi (connect / chat / disconnect).

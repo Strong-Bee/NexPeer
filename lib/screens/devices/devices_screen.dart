@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../services/p2p_service.dart';
-import 'chat/chat_screen.dart';
+import '../../services/p2p_service.dart';
+import '../chat/chat_screen.dart';
 
 class DevicesScreen extends StatefulWidget {
   const DevicesScreen({super.key});

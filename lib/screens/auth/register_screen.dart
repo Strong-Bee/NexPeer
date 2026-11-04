@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
-import '../../widgets/social_login_button.dart';
+import '../../widgets/auth/social_login_button.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
