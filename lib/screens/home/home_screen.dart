@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'call/call_screen.dart';
-import 'chat/chat_screen.dart';
-import 'chat/qr_scan_screen.dart';
-import 'profile/profile_screen.dart';
-import 'story/story_screen.dart';
+import '../call/call_screen.dart';
+import '../chat/chat_screen.dart';
+import '../chat/qr_scan_screen.dart';
+import '../profile/profile_screen.dart';
+import '../story/story_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

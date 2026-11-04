@@ -214,8 +214,10 @@ NexPeer/
 │   ├── models/
 │   ├── screens/
 │   │   ├── auth/
-│   │   ├── chat/
 │   │   ├── call/
+│   │   ├── chat/
+│   │   ├── devices/
+│   │   ├── home/
 │   │   ├── profile/
 │   │   ├── splash/
 │   │   └── story/
@@ -224,6 +226,9 @@ NexPeer/
 │   │   ├── crypto_service.dart
 │   │   └── p2p_service.dart
 │   └── widgets/
+│       ├── auth/
+│       ├── chat/
+│       └── devices/
 ├── test/
 ├── analysis_options.yaml
 ├── pubspec.yaml

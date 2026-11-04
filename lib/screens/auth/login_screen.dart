@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
-import '../../widgets/social_login_button.dart';
+import '../../widgets/auth/social_login_button.dart';
 import 'forgot_password_screen.dart';
 import 'register_screen.dart';
 
