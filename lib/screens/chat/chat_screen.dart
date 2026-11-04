@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/p2p_service.dart';
@@ -26,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
   StreamSubscription<String>? _messageSubscription;
 
   final List<ChatMessage> _messages = [];
+  final List<PlatformFile> _pendingFiles = [];
 
   bool _searching = false;
   bool _sending = false;
@@ -69,7 +71,23 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _sendMessage() async {
     final text = _messageController.text.trim();
 
-    if (text.isEmpty || _sending) return;
+    if ((text.isEmpty && _pendingFiles.isEmpty) || _sending) return;
+
+    if (_pendingFiles.isNotEmpty) {
+      if (!_p2pService.isConnected) {
+        _showMessage('Hubungkan ke peer terlebih dahulu. File belum dikirim.');
+      } else if (!_p2pService.isTransportReady) {
+        _showMessage(
+          'Pemilihan file berhasil, tetapi transfer P2P belum tersedia. '
+          'File tetap tersimpan di daftar lampiran sementara dan belum dikirim.',
+        );
+      } else {
+        _showMessage(
+          'Adapter transfer file belum tersedia pada versi ini. File belum dikirim.',
+        );
+      }
+      return;
+    }
 
     if (!_p2pService.isConnected) {
       _showMessage('Belum terhubung ke peer.');
@@ -218,7 +236,7 @@ class _ChatScreenState extends State<ChatScreen> {
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
-      builder: (context) {
+      builder: (sheetContext) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 25),
@@ -226,41 +244,19 @@ class _ChatScreenState extends State<ChatScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _AttachmentButton(
-                  icon: Icons.photo,
-                  label: 'Gallery',
+                  icon: Icons.photo_library_outlined,
+                  label: 'Photos',
                   onTap: () {
-                    Navigator.pop(context);
-                    _showMessage(
-                      'Gallery akan dihubungkan ke P2P file transfer.',
-                    );
+                    Navigator.pop(sheetContext);
+                    _pickFiles(imagesOnly: true);
                   },
                 ),
                 _AttachmentButton(
-                  icon: Icons.camera_alt,
-                  label: 'Camera',
+                  icon: Icons.insert_drive_file_outlined,
+                  label: 'Files',
                   onTap: () {
-                    Navigator.pop(context);
-                    _showMessage(
-                      'Camera akan dihubungkan ke P2P file transfer.',
-                    );
-                  },
-                ),
-                _AttachmentButton(
-                  icon: Icons.insert_drive_file,
-                  label: 'File',
-                  onTap: () {
-                    Navigator.pop(context);
-                    _showMessage(
-                      'File picker akan dihubungkan ke P2P transfer.',
-                    );
-                  },
-                ),
-                _AttachmentButton(
-                  icon: Icons.location_on,
-                  label: 'Location',
-                  onTap: () {
-                    Navigator.pop(context);
-                    _showMessage('Location sharing akan ditambahkan.');
+                    Navigator.pop(sheetContext);
+                    _pickFiles();
                   },
                 ),
               ],
@@ -269,6 +265,71 @@ class _ChatScreenState extends State<ChatScreen> {
         );
       },
     );
+  }
+
+  Future<void> _pickFiles({bool imagesOnly = false}) async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: imagesOnly ? FileType.image : FileType.any,
+        allowMultiple: true,
+        withData: true,
+      );
+
+      if (result == null || !mounted) return;
+
+      const maxFileBytes = 25 * 1024 * 1024;
+      const maxPendingBytes = 50 * 1024 * 1024;
+      final accepted = <PlatformFile>[];
+      var rejectedCount = 0;
+
+      for (final file in result.files) {
+        final alreadyAdded = _pendingFiles.any(
+          (item) => item.name == file.name && item.size == file.size,
+        );
+        final currentBytes = _pendingFiles.fold<int>(
+          0,
+          (total, item) => total + item.size,
+        );
+        final acceptedBytes = accepted.fold<int>(
+          0,
+          (total, item) => total + item.size,
+        );
+
+        if (file.size > maxFileBytes ||
+            currentBytes + acceptedBytes + file.size > maxPendingBytes ||
+            alreadyAdded) {
+          rejectedCount++;
+          continue;
+        }
+
+        accepted.add(file);
+      }
+
+      if (accepted.isNotEmpty) {
+        setState(() => _pendingFiles.addAll(accepted));
+      }
+
+      if (rejectedCount > 0) {
+        _showMessage(
+          '$rejectedCount file dilewati: batas 25 MB per file, '
+          '50 MB total lampiran, atau file sudah dipilih.',
+        );
+      } else if (accepted.isNotEmpty) {
+        _showMessage('${accepted.length} file ditambahkan ke lampiran.');
+      }
+    } catch (error) {
+      _showMessage('Tidak dapat membuka pemilih file: $error');
+    }
+  }
+
+  void _removePendingFile(PlatformFile file) {
+    setState(() => _pendingFiles.remove(file));
+  }
+
+  String _formatFileSize(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
   // ============================================================
@@ -371,6 +432,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 setState(() {
                   _messages.clear();
+    _pendingFiles.clear();
                 });
               },
               child: const Text('Clear'),
@@ -541,6 +603,9 @@ class _ChatScreenState extends State<ChatScreen> {
             controller: _messageController,
             onSend: _sendMessage,
             onAttachment: _showAttachmentMenu,
+            attachments: _pendingFiles,
+            onRemoveAttachment: _removePendingFile,
+            formatFileSize: _formatFileSize,
             sending: _sending,
           ),
         ],
@@ -666,12 +731,18 @@ class _MessageInput extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onSend;
   final VoidCallback onAttachment;
+  final List<PlatformFile> attachments;
+  final ValueChanged<PlatformFile> onRemoveAttachment;
+  final String Function(int) formatFileSize;
   final bool sending;
 
   const _MessageInput({
     required this.controller,
     required this.onSend,
     required this.onAttachment,
+    required this.attachments,
+    required this.onRemoveAttachment,
+    required this.formatFileSize,
     required this.sending,
   });
 
@@ -680,9 +751,19 @@ class _MessageInput extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 7, 10, 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
+            if (attachments.isNotEmpty)
+              _PendingFilesList(
+                files: attachments,
+                onRemove: onRemoveAttachment,
+                formatFileSize: formatFileSize,
+              ),
+            const SizedBox(height: 4),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
             IconButton(
               onPressed: onAttachment,
               icon: const Icon(Icons.attach_file),
@@ -730,8 +811,111 @@ class _MessageInput extends StatelessWidget {
                       icon: const Icon(Icons.send, size: 19),
                     ),
             ),
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ============================================================
+// PENDING FILES
+// ============================================================
+
+class _PendingFilesList extends StatelessWidget {
+  final List<PlatformFile> files;
+  final ValueChanged<PlatformFile> onRemove;
+  final String Function(int) formatFileSize;
+
+  const _PendingFilesList({
+    required this.files,
+    required this.onRemove,
+    required this.formatFileSize,
+  });
+
+  IconData _iconFor(PlatformFile file) {
+    final extension = (file.extension ?? '').toLowerCase();
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp'].contains(extension)) {
+      return Icons.image_outlined;
+    }
+    if (extension == 'pdf') return Icons.picture_as_pdf_outlined;
+    if (['doc', 'docx', 'odt', 'txt', 'rtf'].contains(extension)) {
+      return Icons.description_outlined;
+    }
+    if (['xls', 'xlsx', 'csv'].contains(extension)) {
+      return Icons.table_chart_outlined;
+    }
+    if (['zip', 'rar', '7z', 'tar', 'gz'].contains(extension)) {
+      return Icons.archive_outlined;
+    }
+    return Icons.insert_drive_file_outlined;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 132),
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: files.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 6),
+        itemBuilder: (context, index) {
+          final file = files[index];
+          final isImage = [
+            'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp',
+          ].contains((file.extension ?? '').toLowerCase());
+
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                if (isImage && file.bytes != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.memory(
+                      file.bytes!,
+                      width: 38,
+                      height: 38,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Icon(_iconFor(file)),
+                    ),
+                  )
+                else
+                  Icon(_iconFor(file), size: 30),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        file.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      Text(
+                        formatFileSize(file.size),
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  tooltip: 'Remove attachment',
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () => onRemove(file),
+                  icon: const Icon(Icons.close, size: 18),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
