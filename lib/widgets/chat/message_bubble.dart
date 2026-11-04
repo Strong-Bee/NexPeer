@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/message.dart';
+import '../../models/message.dart';
 
 /// Menampilkan satu gelembung pesan chat, rata kanan (biru) untuk pesan
 /// milik pengguna lokal dan rata kiri (abu-abu) untuk pesan dari peer.
