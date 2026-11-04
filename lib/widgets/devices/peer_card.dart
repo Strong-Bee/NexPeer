@@ -27,7 +27,7 @@ class PeerCard extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         leading: CircleAvatar(
           radius: 22,
-          backgroundColor: _statusColor(peer.status).withOpacity(0.15),
+          backgroundColor: _statusColor(peer.status).withValues(alpha: 0.15),
           child: Icon(Icons.smartphone, color: _statusColor(peer.status)),
         ),
         title: Text(
