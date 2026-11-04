@@ -860,10 +860,6 @@ class _PendingFilesList extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 6),
         itemBuilder: (context, index) {
           final file = files[index];
-          final isImage = [
-            'png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp',
-          ].contains((file.extension ?? '').toLowerCase());
-
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             decoration: BoxDecoration(
