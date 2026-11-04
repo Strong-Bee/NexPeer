@@ -6,8 +6,13 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if signedIn();
-      allow create, update, delete: if signedIn() && request.auth.uid == userId;
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && exists(/databases/$(database)/documents/usernames/$(request.resource.data.username))
+        && get(/databases/$(database)/documents/usernames/$(request.resource.data.username)).data.uid == request.auth.uid;
+      allow update, delete: if signedIn() && request.auth.uid == userId;
 
       match /contacts/{contactId} {
         allow read, create, update, delete: if signedIn() && request.auth.uid == userId;
@@ -15,7 +20,8 @@ service cloud.firestore {
     }
 
     match /usernames/{username} {
-      allow read: if signedIn();
+      allow get: if signedIn();
+      allow list: if false;
       allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
       allow update, delete: if signedIn() && resource.data.uid == request.auth.uid;
     }
